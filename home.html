@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - CareCab</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="CareCab Logo">
+                <h1>CareCab</h1>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu">
+                <a href="#appointments" class="nav-link">Lịch hẹn</a>
+                <a href="#profile" class="nav-link">Hồ sơ</a>
+                <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <section class="welcome-section">
+            <h2>Xin chào, <span id="userName">Người dùng</span></h2>
+            <p>Chào mừng bạn đến với hệ thống đặt lịch tái khám CareCab</p>
+        </section>
+
+        <section class="quick-actions">
+            <div class="action-card">
+                <h3>Đặt lịch tái khám</h3>
+                <p>Tạo lịch hẹn mới với bác sĩ</p>
+                <a href="book.html" class="btn btn-primary">Đặt lịch ngay</a>
+            </div>
+            <div class="action-card">
+                <h3>Lịch sắp tới</h3>
+                <div id="upcomingAppointments">
+                    <p>Không có lịch hẹn nào</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/home.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>

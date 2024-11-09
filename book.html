@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch tái khám - CareCab</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="CareCab Logo">
+                <h1>CareCab</h1>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link">Trang chủ</a>
+                <a href="#appointments" class="nav-link">Lịch hẹn</a>
+                <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="booking-container">
+        <div class="booking-form">
+            
+            <!-- Thông tin phòng khám -->
+            <div class="clinic-info">
+                <h2>Phòng khám Sản Phụ Khoa<br>Ngọc Hương</h2>
+                <p> 70 Quang Tiến, Đại Mỗ, Nam Từ Liêm, Hà Nội</p>
+            </div>
+
+            <form id="bookingForm">
+                <!-- Thông tin cá nhân -->
+                <div class="form-group">
+                    <label for="fullName">Họ và tên</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="text" id="phone" name="phone" required>
+                </div>
+
+                <!-- Chọn ngày -->
+                <div class="form-group">
+                    <label for="appointmentDate">Ngày tái khám</label>
+                    <input type="date" id="appointmentDate" name="appointmentDate" required>
+                </div>
+
+                <!-- Chọn giờ -->
+                <div class="form-group">
+                    <label for="appointmentTime">Giờ tái khám</label>
+                    <input type="text" id="appointmentTime" name="appointmentTime" readonly required>
+                </div>
+
+                <!-- Ghi chú -->
+                <div class="form-group note-group">
+                    <label for="notes">Ghi chú (nếu có)</label>
+                    <textarea id="notes" name="notes" placeholder="Nhập ghi chú về tình trạng của bạn"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Xác nhận đặt lịch</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Time Selection Popup -->
+    <div class="time-popup" id="timePopup">
+        <div class="time-popup-content">
+            <h3>Chọn giờ tái khám</h3>
+            <div class="time-grid" id="timeGrid">
+                <!-- Time slots will be populated by JavaScript -->
+            </div>
+            <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                <div class="spinner"></div>
+                <p>Đang kiểm tra thời gian còn trống...</p>
+            </div>
+            <div class="time-popup-actions">
+                <button class="btn btn-secondary" id="cancelTimeSelection">Hủy</button>
+                <button class="btn btn-primary" id="confirmTimeSelection">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/book.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>
