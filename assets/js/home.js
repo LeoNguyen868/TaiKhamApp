@@ -63,8 +63,8 @@ function updateProfileUI(data) {
     const profileInfoElement = document.getElementById('profileInfo');
     if (profileInfoElement) {
         profileInfoElement.innerHTML = `
-            <p><strong>Email:</strong> ${data.email || 'Chưa cập nhật'}</p>
-            <p><strong>Số điện thoại:</strong> ${data.phone_number || 'Chưa cập nhật'}</p>
+            <p><strong>Email:</strong> ${userData.email || 'Chưa cập nhật'}</p>
+            <p><strong>Số điện thoại:</strong> ${userData.phone_number || 'Chưa cập nhật'}</p>
         `;
     }
 }

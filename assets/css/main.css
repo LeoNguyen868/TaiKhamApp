@@ -876,6 +876,22 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Add responsive styles for profile-content */
+@media (max-width: 768px) {
+    .profile-content {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-content {
+        padding: 1rem;
+        margin: 0 0.5rem;
+        border-radius: 6px;
+    }
+}
+
 .profile-section {
     margin-bottom: 2rem;
 }
@@ -922,10 +938,46 @@
 
 .edit-profile-form {
     display: grid;
-    gap: 1.5rem;
-    max-width: 600px;
+    gap: 2rem;
+    max-width: 1000px; /* Tăng max-width lên để phù hợp với layout 2 cột */
     margin: 0 auto;
+    width: 100%;
+    padding: 0 2rem;
 }
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Chia làm 2 cột */
+    gap: 2rem; /* Khoảng cách giữa các cột */
+}
+
+.form-group {
+    margin-bottom: 0; /* Reset margin bottom vì đã có gap */
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Cho phép một số trường spans full width */
+}
+
+/* Điều chỉnh cho textarea và các trường dài */
+.form-group textarea,
+.form-group.full-width input {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr; /* Chuyển về 1 cột trên mobile */
+        gap: 1rem;
+    }
+    
+    .edit-profile-form {
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+}
+
+/* ...existing code... */
 
 .form-actions {
     display: flex;

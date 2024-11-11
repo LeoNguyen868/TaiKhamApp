@@ -31,39 +31,49 @@
         <h2>Chỉnh sửa thông tin</h2>
         <div class="profile-content">
             <form id="editProfileForm" class="edit-profile-form">
-                <div class="form-group">
-                    <label for="fullName">Họ và tên:</label>
-                    <input type="text" id="fullName" name="full_name" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Họ và tên:</label>
+                        <input type="text" id="fullName" name="full_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Ngày sinh:</label>
+                        <input type="date" id="birthDate" name="date_of_birth" data-date-format="DD/MM/YYYY">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="birthDate">Ngày sinh:</label>
-                    <input type="date" id="birthDate" name="date_of_birth" data-date-format="DD/MM/YYYY">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender">Giới tính:</label>
+                        <select id="gender" name="gender">
+                            <option value="">Chọn giới tính</option>
+                            <option value="M">Nam</option>
+                            <option value="F">Nữ</option>
+                            <option value="O">Khác</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" id="address" name="address">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="gender">Giới tính:</label>
-                    <select id="gender" name="gender">
-                        <option value="">Chọn giới tính</option>
-                        <option value="M">Nam</option>
-                        <option value="F">Nữ</option>
-                        <option value="O">Khác</option>
-                    </select>
-                </div>
-                <div class="form-group">
+
+                <div class="form-group full-width">
                     <label for="bio">Tiểu sử:</label>
                     <textarea id="bio" name="bio" rows="3"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="address">Địa chỉ:</label>
-                    <input type="text" id="address" name="address">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emergencyContact">Liên hệ khẩn cấp:</label>
+                        <input type="text" id="emergencyContact" name="emergency_contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyRelation">Quan hệ:</label>
+                        <input type="text" id="emergencyRelation" name="emergency_contact_relationship">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="emergencyContact">Liên hệ khẩn cấp:</label>
-                    <input type="text" id="emergencyContact" name="emergency_contact">
-                </div>
-                <div class="form-group">
-                    <label for="emergencyRelation">Quan hệ:</label>
-                    <input type="text" id="emergencyRelation" name="emergency_contact_relationship">
-                </div>
+
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                     <a href="profile.html" class="btn btn-secondary">Hủy</a>

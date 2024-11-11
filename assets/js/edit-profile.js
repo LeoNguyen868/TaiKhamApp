@@ -109,6 +109,7 @@ async function handleSubmit(event) {
             emergency_contact: document.getElementById('emergencyContact').value,
             emergency_contact_relationship: document.getElementById('emergencyRelation').value
         };
+        localStorage.setItem('userProfile', JSON.stringify(formData));
 
         const response = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/users/profile/${userId}`, {
             method: 'PUT',

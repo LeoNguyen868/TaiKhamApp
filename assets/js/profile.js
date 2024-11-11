@@ -52,9 +52,10 @@ async function loadUserProfile() {
 }
 
 function updateProfileUI(data) {
+    userData=JSON.parse(localStorage.getItem('userData'));
     document.getElementById('fullName').textContent = data.full_name || 'Chưa cập nhật';
-    document.getElementById('email').textContent = data.email || 'Chưa cập nhật';
-    document.getElementById('phone').textContent = data.phone_number || 'Chưa cập nhật';
+    document.getElementById('email').textContent = userData.email || 'Chưa cập nhật';
+    document.getElementById('phone').textContent = userData.phone_number || 'Chưa cập nhật';
     document.getElementById('birthDate').textContent = formatDate(data.date_of_birth) || 'Chưa cập nhật';
     document.getElementById('gender').textContent = formatGender(data.gender) || 'Chưa cập nhật';
     document.getElementById('bio').textContent = data.bio || 'Chưa cập nhật';
