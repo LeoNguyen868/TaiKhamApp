@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const patientData = await getPatient();
         await fetchAllAppointments(patientData.id);
+        // Thêm dòng này để lọc mặc định appointments theo trạng thái "pending"
+        filterAppointments('pending');
     } catch (error) {
         console.error('Error loading data:', error);
     }

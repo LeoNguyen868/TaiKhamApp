@@ -29,38 +29,45 @@
         </nav>
     </header>
 
-    <main class="main-content">
-        <div class="dashboard">
-            <!-- Thêm container thông báo mới -->
-            <div id="messageContainer" class="message-container"></div>
-            
-            <section class="welcome-section">
-                <div class="welcome-header">
-                    <h2>Quản lý lịch tái khám</h2>
-                    <div class="status-filters">
-                        <button class="filter-btn active" data-status="all">Tất cả</button>
-                        <button class="filter-btn" data-status="pending">Chờ xác nhận</button>
-                        <button class="filter-btn" data-status="confirmed">Đã xác nhận</button>
-                        <button class="filter-btn" data-status="completed">Đã hoàn thành</button>
-                        <button class="filter-btn" data-status="cancelled">Đã hủy</button>
+    <div class="admin-wrapper">
+        <div class="admin-content">
+            <main class="main-content">
+                <div class="dashboard">
+                    <!-- Thêm container thông báo mới -->
+                    <div id="messageContainer" class="message-container"></div>
+                    
+                    <section class="welcome-section">
+                        <div class="welcome-header">
+                            <h2>Quản lý lịch tái khám</h2>
+                            <div class="status-filters">
+                                <button class="filter-btn active" data-status="pending">Chờ xác nhận</button>
+                                <button class="filter-btn" data-status="confirmed">Đã xác nhận</button>
+                                <button class="filter-btn" data-status="completed">Đã hoàn thành</button>
+                                <button class="filter-btn" data-status="cancelled">Đã hủy</button>
+                                <button class="filter-btn" data-status="all">Tất cả</button>
+                            </div>
+                        </div>
+                        <div class="search-box">
+                            <input type="text" placeholder="Tìm kiếm bệnh nhân...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </section>
+
+                    <div class="appointments-container">
+                        <div id="appointmentsList" class="appointments-table-view">
+                            <!-- Table will be rendered here -->
+                        </div>
+                        <div id="appointmentsCards" class="appointments-cards-view">
+                            <!-- Cards will be rendered here -->
+                        </div>
                     </div>
                 </div>
-                <div class="search-box">
-                    <input type="text" placeholder="Tìm kiếm bệnh nhân...">
-                    <i class="fas fa-search"></i>
-                </div>
-            </section>
-
-            <div class="appointments-container">
-                <div id="appointmentsList" class="appointments-table-view">
-                    <!-- Table will be rendered here -->
-                </div>
-                <div id="appointmentsCards" class="appointments-cards-view">
-                    <!-- Cards will be rendered here -->
-                </div>
-            </div>
+            </main>
         </div>
-    </main>
+        <footer>
+            <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+        </footer>
+    </div>
 
     <!-- Xóa container thông báo cũ -->
     <!-- <div id="notificationContainer" class="notification-container"></div> -->
@@ -72,12 +79,12 @@
             <div id="appointmentDetails"></div>
             <div class="popup-actions">
                 <button class="btn btn-secondary close-btn">Đóng</button>
-                <button class="btn btn-primary confirm-btn">Xác nhận lịch hẹn</button>
             </div>
         </div>
     </div>
 
     <script src="assets/js/menu.js"></script>
     <script src="assets/js/admin.js"></script>
+    
 </body>
 </html>

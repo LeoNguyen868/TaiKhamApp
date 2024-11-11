@@ -71,6 +71,24 @@
     box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
 }
 
+/* Add wrapper styles */
+.booking-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-content {
+    flex: 1 0 auto;
+    padding-bottom: 2rem;
+}
+
+/* Ensure footer stays at bottom */
+footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
 @media (max-width: 768px) {
     .booking-container {
         padding-top: 5rem;

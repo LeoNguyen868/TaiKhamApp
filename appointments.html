@@ -28,49 +28,40 @@
         </nav>
     </header>
 
-    <main class="appointments-page">
-        <h2>Danh sách lịch hẹn</h2>
-        
-        <div class="status-tabs">
-            <button class="status-tab active" data-status="all">Tất cả</button>
-            <button class="status-tab" data-status="pending">Chờ xác nhận</button>
-            <button class="status-tab" data-status="confirmed">Đã xác nhận</button>
-            <button class="status-tab" data-status="cancelled">Đã hủy</button>
-            <button class="status-tab" data-status="completed">Đã hoàn thành</button>
-        </div>
-
-        <div id="appointmentsList" class="appointments-list">
-            <p>Đang tải lịch hẹn...</p>
-        </div>
-
-        <!-- Add appointment details popup -->
-        <div id="appointmentDetailsPopup" class="appointment-popup">
-            <div class="appointment-popup-content">
-                <button class="close-popup" aria-label="Đóng">&times;</button>
-                <h3>Chi tiết lịch hẹn</h3>
-                <div id="appointmentDetails"></div>
-                <div class="popup-actions" id="popupActions">
-                    <!-- Actions will be inserted here dynamically -->
+    <div class="appointments-wrapper">
+        <div class="appointments-content">
+            <main class="appointments-page">
+                <h2>Danh sách lịch hẹn</h2>
+                
+                <div class="status-tabs">
+                    <button class="status-tab active" data-status="pending">Chờ xác nhận</button>
+                    <button class="status-tab" data-status="confirmed">Đã xác nhận</button>
+                    <button class="status-tab" data-status="cancelled">Đã hủy</button>
+                    <button class="status-tab" data-status="completed">Đã hoàn thành</button>
+                    <button class="status-tab status-tab-all" data-status="all">Tất cả</button>
                 </div>
-            </div>
-        </div>
-    </main>
 
-    <!-- Add confirmation modal -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-            <h3>Xác nhận hủy lịch hẹn</h3>
-            <p>Bạn có chắc chắn muốn hủy lịch hẹn này?</p>
-            <div class="modal-actions">
-                <button id="confirmCancel" class="btn btn-secondary">Hủy lịch hẹn</button>
-                <button id="cancelModal" class="btn">Đóng</button>
-            </div>
+                <div id="appointmentsList" class="appointments-list">
+                    <p>Đang tải lịch hẹn...</p>
+                </div>
+
+                <!-- Add appointment details popup -->
+                <div id="appointmentDetailsPopup" class="appointment-popup">
+                    <div class="appointment-popup-content">
+                        <button class="close-popup" aria-label="Đóng">&times;</button>
+                        <h3>Chi tiết lịch hẹn</h3>
+                        <div id="appointmentDetails"></div>
+                        <div class="popup-actions" id="popupActions">
+                            <!-- Actions will be inserted here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
+        <footer>
+            <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+        </footer>
     </div>
-
-    <footer>
-        <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
-    </footer>
 
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/appointments.js"></script>

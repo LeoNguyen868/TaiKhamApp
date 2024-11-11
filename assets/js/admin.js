@@ -13,52 +13,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Replace sample data with empty array
     let appointments = [];
-    let currentFilter = 'all';
+    let currentFilter = 'pending'; // Change default filter to pending
 
-    // Add cache helper functions
-    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-    
-    function getCache(key) {
-        const cached = localStorage.getItem(key);
-        if (!cached) return null;
-        
-        const { timestamp, data } = JSON.parse(cached);
-        if (Date.now() - timestamp > CACHE_DURATION) {
-            localStorage.removeItem(key);
-            return null;
-        }
-        return data;
-    }
+    // Remove cache functions and use temporary store instead
+    let appointmentsStore = {
+        appointments: [],
+        patients: new Map()
+    };
 
-    function setCache(key, data) {
-        const cache = {
-            timestamp: Date.now(),
-            data
-        };
-        localStorage.setItem(key, JSON.stringify(cache));
-    }
-
-    // Add API functions
+    // Update API functions
     async function fetchAppointments() {
         try {
-            const cached = getCache('appointments');
-            if (cached) return cached;
-
             const response = await fetch('https://carecab-9773d1d0a8c1.herokuapp.com/appointments/');
             const data = await response.json();
-            setCache('appointments', data);
+            appointmentsStore.appointments = data;
             return data;
         } catch (error) {
             console.error('Error fetching appointments:', error);
-            return getCache('appointments') || [];
+            return appointmentsStore.appointments;
         }
     }
 
     async function fetchPatientInfo(patientId) {
         try {
-            const cacheKey = `patient_${patientId}`;
-            const cached = getCache(cacheKey);
-            if (cached) return cached;
+            if (appointmentsStore.patients.has(patientId)) {
+                return appointmentsStore.patients.get(patientId);
+            }
 
             const userResponse = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/users/by-patient/${patientId}`);
             const userData = await userResponse.json();
@@ -67,17 +47,34 @@ document.addEventListener('DOMContentLoaded', function() {
             const profileData = await profileResponse.json();
             
             const data = { ...userData, ...profileData };
-            setCache(cacheKey, data);
+            appointmentsStore.patients.set(patientId, data);
             return data;
         } catch (error) {
             console.error('Error fetching patient info:', error);
-            return getCache(`patient_${patientId}`) || null;
+            return null;
+        }
+    }
+
+    // Add function to handle button loading state
+    function setButtonLoading(button, isLoading) {
+        if (isLoading) {
+            button.disabled = true;
+            const originalText = button.innerHTML;
+            button.dataset.originalText = originalText;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+        } else {
+            button.disabled = false;
+            button.innerHTML = button.dataset.originalText;
+            delete button.dataset.originalText;
         }
     }
 
     // Add complete appointment function
-    async function completeAppointment(appointmentId) {
+    async function completeAppointment(appointmentId, button) {
         try {
+            setButtonLoading(button, true);
+            showNotification('Đang xử lý yêu cầu...', 'info');
+            
             const response = await fetch(
                 `https://carecab-9773d1d0a8c1.herokuapp.com/appointments/${appointmentId}/staff-complete`,
                 {
@@ -89,15 +86,16 @@ document.addEventListener('DOMContentLoaded', function() {
             );
             
             if (response.ok) {
-                localStorage.removeItem('appointments'); // Clear appointments cache
                 showNotification('Đã hoàn thành lịch hẹn!');
-                await renderAppointments();
+                await renderAppointments(); // This will fetch fresh data
             } else {
                 throw new Error('Failed to complete appointment');
             }
         } catch (error) {
             console.error('Error completing appointment:', error);
             showNotification('Không thể cập nhật trạng thái. Vui lòng thử lại!', 'error');
+        } finally {
+            setButtonLoading(button, false);
         }
     }
 
@@ -242,8 +240,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Update confirmation function
-    async function confirmAppointment(appointmentId) {
+    async function confirmAppointment(appointmentId, button) {
         try {
+            setButtonLoading(button, true);
+            showNotification('Đang xử lý yêu cầu...', 'info');
+            
             const response = await fetch(
                 `https://carecab-9773d1d0a8c1.herokuapp.com/appointments/${appointmentId}/nurse-confirm?nurse_id=1`,
                 {
@@ -255,15 +256,39 @@ document.addEventListener('DOMContentLoaded', function() {
             );
             
             if (response.ok) {
-                localStorage.removeItem('appointments'); // Clear appointments cache
                 showNotification('Xác nhận lịch hẹn thành công!');
-                await renderAppointments();
+                await renderAppointments(); // This will fetch fresh data
             } else {
                 throw new Error('Failed to confirm appointment');
             }
         } catch (error) {
             console.error('Error confirming appointment:', error);
             showNotification('Không thể xác nhận lịch hẹn. Vui lòng thử lại!', 'error');
+        } finally {
+            setButtonLoading(button, false);
+        }
+    }
+
+    // Add auto-refresh functionality
+    const AUTO_REFRESH_INTERVAL = 5*60000; // 1 minute in milliseconds
+    let refreshInterval;
+
+    function startAutoRefresh() {
+        // Clear any existing interval
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
+        }
+        
+        // Set new interval
+        refreshInterval = setInterval(async () => {
+            await renderAppointments();
+        }, AUTO_REFRESH_INTERVAL);
+    }
+
+    // Stop auto-refresh when user interacts with popup
+    function stopAutoRefresh() {
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
         }
     }
 
@@ -282,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         popup.classList.add('active');
+        stopAutoRefresh();
     }
 
     // Event listeners
@@ -317,12 +343,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (completeBtn) {
                 const appointmentId = completeBtn.dataset.appointmentId;
-                await completeAppointment(appointmentId);
+                await completeAppointment(appointmentId, completeBtn);
             }
             
             if (confirmBtn) {
                 const appointmentId = confirmBtn.dataset.appointmentId;
-                await confirmAppointment(appointmentId);
+                await confirmAppointment(appointmentId, confirmBtn);
             }
         }
     }, true); // Thêm capture phase
@@ -330,6 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close popup handlers
     const closePopup = () => {
         popup.classList.remove('active');
+        startAutoRefresh(); // Resume auto-refresh when popup is closed
     };
 
     [closePopupBtn, closeBtn].forEach(btn => {
@@ -343,13 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    confirmBtn.addEventListener('click', async () => {
-        const currentAppointmentId = popup.querySelector('.appointment-details')?.dataset.appointmentId;
-        if (currentAppointmentId) {
-            await confirmAppointment(currentAppointmentId);
-            closePopup();
-        }
-    });
+    // Remove confirmBtn click handler and reference
 
     // Add filter click handlers
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -370,4 +391,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize with loading
     showLoading();
     renderAppointments();
+    startAutoRefresh();
 });

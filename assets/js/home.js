@@ -139,8 +139,7 @@ async function fetchAppointments(patientId) {
                 day: 'numeric'
             });
 
-            // Lấy trực tiếp giờ từ server
-            const timeString = appointment.time.substring(0, 5); // Lấy chỉ "HH:mm"
+            const timeString = appointment.time.substring(0, 5);
 
             const statusMap = {
                 'pending': 'Chờ xác nhận',
@@ -150,7 +149,7 @@ async function fetchAppointments(patientId) {
             };
 
             return `
-                <div class="appointment-item">
+                <div class="appointment-item" onclick="window.location.href='appointments.html'">
                     <p><strong>Ngày:</strong> ${formattedDate}</p>
                     <p><strong>Giờ:</strong> ${timeString}</p>
                     <p><strong>Trạng thái:</strong> <span class="status-${appointment.status}">${statusMap[appointment.status]}</span></p>

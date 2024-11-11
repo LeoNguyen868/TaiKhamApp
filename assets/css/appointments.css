@@ -74,3 +74,21 @@
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+/* Add wrapper styles */
+.appointments-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.appointments-content {
+    flex: 1 0 auto;
+    padding-bottom: 2rem;
+}
+
+/* Ensure footer stays at bottom */
+footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}

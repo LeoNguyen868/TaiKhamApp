@@ -16,6 +16,13 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1 0 auto; /* Thay đổi để content có thể mở rộng */
   }
   
   /* Header Styles */
@@ -150,10 +157,12 @@
   
   /* Footer */
   footer {
+    flex-shrink: 0; /* Ngăn footer co lại */
     text-align: center;
     padding: 2rem;
     background-color: var(--text-color);
     color: var(--white);
+    margin-top: auto; /* Đẩy footer xuống dưới khi content không đủ cao */
   }
   
   /* Auth Form Styles */
@@ -1181,6 +1190,11 @@ input[type="date"] {
     border-bottom: 1px solid #e5e7eb;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative; /* Thêm position relative */
+}
+
+.status-tab-all {
+    margin-left: auto; /* Đẩy tab "Tất cả" sang bên phải */
 }
 
 .status-tab {
