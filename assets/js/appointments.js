@@ -8,6 +8,30 @@ const statusMap = {
     'completed': 'Đã hoàn thành'
 };
 
+// Add this function at the top level
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    
+    const container = document.getElementById('toastContainer');
+    container.appendChild(toast);
+    
+    // Force reflow
+    toast.offsetHeight;
+    
+    requestAnimationFrame(() => {
+        toast.classList.add('show');
+    });
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 400);
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     if (!checkAuthStatus()) {
         return;
@@ -163,36 +187,52 @@ function showAppointmentDetails(appointment) {
 }
 
 async function cancelAppointment(appointmentId) {
-    if (!confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?')) {
-        return;
-    }
+    const modal = document.getElementById('confirmationModal');
+    const confirmBtn = document.getElementById('confirmCancel');
+    const cancelBtn = document.getElementById('cancelModal');
 
-    try {
-        const response = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/appointments/${appointmentId}/cancel`, {
-            method: 'PUT',
-            headers: { 'accept': 'application/json' }
-        });
+    modal.classList.add('show');
 
-        if (!response.ok) {
-            throw new Error('Failed to cancel appointment');
-        }
+    return new Promise((resolve) => {
+        const handleConfirm = async () => {
+            modal.classList.remove('show');
+            cleanup();
 
-        // Refresh appointments list
-        const patientData = await getPatient();
-        await fetchAllAppointments(patientData.id);
-        
-        // Close popup
-        document.getElementById('appointmentDetailsPopup').classList.remove('active');
-        
-        // Show success message
-        alert('Hủy lịch hẹn thành công');
-    } catch (error) {
-        console.error('Error cancelling appointment:', error);
-        alert('Có lỗi xảy ra khi hủy lịch hẹn');
-    }
+            try {
+                const patientData = await getPatient();
+                const response = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/appointments/${appointmentId}?patient_id=${patientData.id}`, {
+                    method: 'DELETE',
+                    headers: { 'accept': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('Failed to cancel appointment');
+
+                await fetchAllAppointments(patientData.id);
+                document.getElementById('appointmentDetailsPopup').classList.remove('active');
+                showToast('Hủy lịch hẹn thành công');
+            } catch (error) {
+                console.error('Error cancelling appointment:', error);
+                showToast('Có lỗi xảy ra khi hủy lịch hẹn', 'error');
+            }
+        };
+
+        const handleCancel = () => {
+            modal.classList.remove('show');
+            cleanup();
+        };
+
+        const cleanup = () => {
+            confirmBtn.removeEventListener('click', handleConfirm);
+            cancelBtn.removeEventListener('click', handleCancel);
+        };
+
+        confirmBtn.addEventListener('click', handleConfirm);
+        cancelBtn.addEventListener('click', handleCancel);
+    });
 }
 
 function editAppointment(appointmentId) {
     // Redirect to booking page with appointment ID
-    window.location.href = `book.html?edit=${appointmentId}`;
+    alert('Chức năng chỉnh sửa lịch hẹn đang được phát triển');
+    //window.location.href = `book.html?edit=${appointmentId}`;
 }

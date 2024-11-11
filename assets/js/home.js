@@ -3,14 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Hiển thị thông tin người dùng đầy đủ hơn
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    if (userData) {
-        const userNameElement = document.getElementById('userName');
-        if (userNameElement) {
-            userNameElement.textContent = userData.username;
-        }
-    }
+    // Load user profile data
+    await loadUserProfile();
 
     // Lấy và lưu thông tin bệnh nhân
     try {
@@ -23,6 +17,57 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error loading data:', error);
     }
 });
+
+async function loadUserProfile() {
+    try {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const userId = userData.user_id;
+
+        // First try to load from localStorage
+        const cachedProfile = localStorage.getItem('userProfile');
+        if (cachedProfile) {
+            const profileData = JSON.parse(cachedProfile);
+            updateProfileUI(profileData);
+            return;
+        }
+
+        const myHeaders = new Headers();
+        myHeaders.append("accept", "application/json");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        const response = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/users/profile/${userId}`, requestOptions);
+        const data = await response.json();
+
+        if (data) {
+            // Store profile data in localStorage
+            localStorage.setItem('userProfile', JSON.stringify(data));
+            updateProfileUI(data);
+        }
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+    }
+}
+
+function updateProfileUI(data) {
+    const userNameElement = document.getElementById('userName');
+    if (userNameElement) {
+        userNameElement.textContent = data.full_name || data.username;
+    }
+
+    // Update other profile elements if they exist
+    const profileInfoElement = document.getElementById('profileInfo');
+    if (profileInfoElement) {
+        profileInfoElement.innerHTML = `
+            <p><strong>Email:</strong> ${data.email || 'Chưa cập nhật'}</p>
+            <p><strong>Số điện thoại:</strong> ${data.phone_number || 'Chưa cập nhật'}</p>
+        `;
+    }
+}
 
 async function getPatient() {
     try {
@@ -73,7 +118,9 @@ async function fetchAppointments(patientId) {
             .filter(appointment => {
                 // Chuyển đổi ngày từ UTC sang local time
                 const appointmentDate = new Date(appointment.date + 'T00:00:00');
-                return appointmentDate >= today && appointmentDate <= fiveDaysFromNow;
+                return appointmentDate >= today && 
+                       appointmentDate <= fiveDaysFromNow && 
+                       (appointment.status === 'pending' || appointment.status === 'confirmed');
             })
             .sort((a, b) => new Date(a.date) - new Date(b.date));
 

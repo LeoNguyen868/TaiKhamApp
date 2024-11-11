@@ -5,18 +5,26 @@ const checkAuthStatus = () => {
     // If on login page
     if (currentPath === '/index.html' || currentPath === '/') {
         if (userData) {
-            // User is already logged in, redirect to home
-            window.location.href = '/home.html';
+            const user = JSON.parse(userData);
+            // Redirect based on role
+            window.location.href = user.role === 'admin' ? '/admin.html' : '/home.html';
         }
     } 
     // If on protected pages
-    else if (currentPath === '/home.html' || currentPath === '/book.html') {
+    else if (currentPath === '/home.html' || currentPath === '/book.html' || currentPath === '/admin.html') {
         if (!userData) {
             // User is not logged in, redirect to login
             window.location.href = '/index.html';
+        } else {
+            const user = JSON.parse(userData);
+            // Check if admin trying to access user pages or vice versa
+            if ((user.role === 'admin' && (currentPath === '/home.html' || currentPath === '/book.html')) ||
+                (user.role === 'user' && currentPath === '/admin.html')) {
+                window.location.href = user.role === 'admin' ? '/admin.html' : '/home.html';
+            }
         }
     }
-    if (userData)return true;
+    if (userData) return true;
     return false;
 };
 
@@ -70,7 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     formMessage.className = 'form-message success';
                     
                     setTimeout(() => {
-                        window.location.href = '/home.html';
+                        // Redirect based on role
+                        const redirectPath = result.data.role === 'admin' ? '/admin.html' : '/home.html';
+                        window.location.href = redirectPath;
                     }, 1000);
                 } else {
                     formMessage.textContent = result.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
