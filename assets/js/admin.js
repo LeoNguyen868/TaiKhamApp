@@ -14,12 +14,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Replace sample data with empty array
     let appointments = [];
     let currentFilter = 'pending'; // Change default filter to pending
+    let currentSearch = ''; // Add search state
+    let currentDateFilter = '';
+    let currentTimeFilter = '';
 
     // Remove cache functions and use temporary store instead
     let appointmentsStore = {
         appointments: [],
         patients: new Map()
     };
+
+    // Time slot constants
+    const WEEKDAY_SLOTS = [
+        '17:00', '17:15', '17:30', '17:45',
+        '18:00', '18:15', '18:30', '18:45',
+        '19:00', '19:15', '19:30'
+    ];
+
+    const WEEKEND_SLOTS = [
+        '08:00', '08:15', '08:30', '08:45',
+        '09:00', '09:15', '09:30', '09:45',
+        '10:00', '10:15', '10:30',
+        '14:00', '14:15', '14:30', '14:45',
+        '15:00', '15:15', '15:30', '15:45',
+        '16:00', '16:15', '16:30'
+    ];
 
     // Update API functions
     async function fetchAppointments() {
@@ -105,7 +124,32 @@ document.addEventListener('DOMContentLoaded', function() {
         return appointments.filter(apt => apt.status === status);
     }
 
-    // Update render function to handle API data
+    // Add search function
+    function searchAppointments(appointments, searchTerm) {
+        if (!searchTerm) return appointments;
+        
+        searchTerm = searchTerm.toLowerCase().trim();
+        return appointments.filter(apt => 
+            apt.id.toString().includes(searchTerm) ||
+            apt.patientId.toString().includes(searchTerm) ||
+            apt.patientName.toLowerCase().includes(searchTerm) ||
+            apt.date.includes(searchTerm) ||
+            apt.time.includes(searchTerm) ||
+            apt.phone.includes(searchTerm) ||
+            apt.reason.toLowerCase().includes(searchTerm)
+        );
+    }
+
+    // Add date-time filter function
+    function filterByDateTime(appointments, date, time) {
+        return appointments.filter(apt => {
+            const matchDate = !date || apt.date === date.split('-').reverse().join('/');
+            const matchTime = !time || apt.time === time;
+            return matchDate && matchTime;
+        });
+    }
+
+    // Update render function to handle API data and include search
     async function renderAppointments() {
         const appointmentsData = await fetchAppointments();
         appointments = await Promise.all(appointmentsData.map(async (apt) => {
@@ -129,7 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }));
 
-        const filteredAppointments = filterAppointments(appointments, currentFilter);
+        // Apply all filters
+        let filteredAppointments = filterAppointments(appointments, currentFilter);
+        filteredAppointments = searchAppointments(filteredAppointments, currentSearch);
+        filteredAppointments = filterByDateTime(filteredAppointments, currentDateFilter, currentTimeFilter);
 
         // Update table view with separated time and date columns
         const tableHtml = `
@@ -380,6 +427,73 @@ document.addEventListener('DOMContentLoaded', function() {
             currentFilter = btn.dataset.status;
             renderAppointments();
         });
+    });
+
+    // Update search input handler - fix the selector to match new HTML structure
+    const searchInput = document.querySelector('.search-wrapper input');
+    if (searchInput) { // Add null check
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderAppointments();
+        });
+    }
+
+    // Add date-time filter handlers
+    const dateFilter = document.getElementById('dateFilter');
+    const timeFilter = document.getElementById('timeFilter');
+    const clearFilterBtn = document.getElementById('clearDateFilter');
+
+    function updateTimeSlotOptions(date) {
+        const slots = date ? getTimeSlots(date) : [];
+        
+        // Reset time filter
+        timeFilter.innerHTML = '<option value="">Chọn giờ</option>';
+        
+        // Add time slots
+        slots.forEach(slot => {
+            const option = document.createElement('option');
+            option.value = slot;
+            option.textContent = slot;
+            timeFilter.appendChild(option);
+        });
+    }
+
+    function getTimeSlots(date) {
+        const day = new Date(date).getDay();
+        return day === 0 || day === 6 ? WEEKEND_SLOTS : WEEKDAY_SLOTS;
+    }
+
+    // Date filter change handler
+    dateFilter.addEventListener('change', (e) => {
+        currentDateFilter = e.target.value;
+        updateTimeSlotOptions(currentDateFilter);
+        
+        if (currentDateFilter) {
+            clearFilterBtn.style.display = 'inline-block';
+        } else {
+            clearFilterBtn.style.display = 'none';
+            timeFilter.value = '';
+            currentTimeFilter = '';
+        }
+        
+        renderAppointments();
+    });
+
+    // Time filter change handler
+    timeFilter.addEventListener('change', (e) => {
+        currentTimeFilter = e.target.value;
+        renderAppointments();
+    });
+
+    // Clear filter button
+    clearFilterBtn.addEventListener('click', () => {
+        currentDateFilter = '';
+        currentTimeFilter = '';
+        dateFilter.value = '';
+        timeFilter.value = '';
+        clearFilterBtn.style.display = 'none';
+        updateTimeSlotOptions('');
+        renderAppointments();
     });
 
     // Update settings click handler

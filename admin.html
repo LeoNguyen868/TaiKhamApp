@@ -39,6 +39,28 @@
                     <section class="welcome-section">
                         <div class="welcome-header">
                             <h2>Quản lý lịch tái khám</h2>
+                            <div class="filters-row">
+                                <div class="filters-group">
+                                    <div class="search-wrapper">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" placeholder="Tìm kiếm...">
+                                    </div>
+                                    <div class="filters-actions">
+                                        <div class="date-filter-wrapper">
+                                            <input type="date" id="dateFilter" class="date-filter" placeholder="Chọn ngày">
+                                        </div>
+                                        <div class="time-filter-wrapper">
+                                            <select id="timeFilter" class="time-filter">
+                                                <option value="">Chọn giờ</option>
+                                            </select>
+                                        </div>
+                                        <button id="clearDateFilter" class="btn-clear-filter" style="display: none;">
+                                            <i class="fas fa-times"></i> Xóa bộ lọc
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div class="status-filters">
                                 <button class="filter-btn active" data-status="pending">Chờ xác nhận</button>
                                 <button class="filter-btn" data-status="confirmed">Đã xác nhận</button>
@@ -46,10 +68,6 @@
                                 <button class="filter-btn" data-status="cancelled">Đã hủy</button>
                                 <button class="filter-btn" data-status="all">Tất cả</button>
                             </div>
-                        </div>
-                        <div class="search-box">
-                            <input type="text" placeholder="Tìm kiếm bệnh nhân...">
-                            <i class="fas fa-search"></i>
                         </div>
                     </section>
 
