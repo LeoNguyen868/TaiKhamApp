@@ -851,3 +851,450 @@
 .password-toggle:hover {
     color: #333;
 }
+
+/* Add these styles to your existing CSS file */
+
+.profile-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.profile-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+    margin-bottom: 2rem;
+}
+
+.profile-info {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.info-group {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+}
+
+.info-group label {
+    font-weight: bold;
+    color: #666;
+}
+
+.info-group p {
+    margin: 0;
+}
+
+#editProfileBtn {
+    margin-top: 1rem;
+}
+
+/* Update profile container styles */
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 1rem 2rem; /* Increased top padding to account for fixed header */
+}
+
+/* Add styles for main content area */
+.main-content {
+    margin-top: 60px; /* Height of the header */
+    min-height: calc(100vh - 60px);
+}
+
+/* ...existing code... */
+
+.edit-profile-form {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.btn-secondary {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+@media (max-width: 640px) {
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ...existing code... */
+
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    max-width: 350px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+
+.notification.success {
+    background-color: #10b981;
+}
+
+.notification.error {
+    background-color: #ef4444;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+/* ...existing code... */
+
+/* Add custom styling for date input */
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]:before {
+    content: attr(data-date);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+input[type="date"]:focus:before,
+input[type="date"]:valid:before {
+    display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+input[type="date"]:before {
+    content: attr(data-formatted-date);
+    color: #000000;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+input[type="date"] {
+    position: relative;
+    padding-left: 10px;
+}
+
+/* ...existing code... */
+
+/* Notification styles */
+.notification-wrapper {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-out;
+    max-width: 350px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left: 4px solid #10b981;
+}
+
+.notification.error {
+    border-left: 4px solid #ef4444;
+}
+
+.notification-message {
+    color: #1f2937;
+    font-size: 0.95rem;
+}
+
+/* ...existing code... */
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.form-actions .btn {
+    flex: 1;
+}
+
+/* ...existing code... */
+
+/* Appointment Styles */
+.appointment-item {
+    background-color: var(--white);
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.appointment-item p {
+    margin-bottom: 0.5rem;
+}
+
+.appointment-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Status colors */
+.status-pending {
+    color: #f59e0b;
+    font-weight: 500;
+}
+
+.status-confirmed {
+    color: #10b981;
+    font-weight: 500;
+}
+
+.status-cancelled {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+.status-completed {
+    color: #6366f1;
+    font-weight: 500;
+}
+
+
+.appointments-page {
+    padding: 8rem 2rem 2rem; /* Increased from 6rem to 8rem */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.appointments-page h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.filters {
+    margin: 20px 0;
+}
+
+.filter-select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.appointments-list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.appointment-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.status-pending { color: #f0ad4e; }
+.status-confirmed { color: #5bc0de; }
+.status-cancelled { color: #d9534f; }
+.status-completed { color: #5cb85c; }
+
+
+.status-tabs {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.status-tab {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+}
+
+.status-tab:hover {
+    color: var(--primary-color);
+}
+
+.status-tab.active {
+    color: var(--primary-color);
+}
+
+.status-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+@media (max-width: 640px) {
+    .status-tabs {
+        gap: 0.5rem;
+    }
+    
+    .status-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+
+.appointment-popup {
+    display: none;  /* Đảm bảo popup bị ẩn mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;  /* Thêm opacity để làm hiệu ứng mượt hơn */
+    visibility: hidden;  /* Thêm visibility để đảm bảo popup thực sự bị ẩn */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.appointment-popup.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+
+.appointment-popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.8rem;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-popup {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+}
+
+.close-popup:hover {
+    color: var(--primary-color);
+}
+
+.popup-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+.appointment-item {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.appointment-item:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+    .popup-actions {
+        flex-direction: column;
+    }
+    
+    .popup-actions .btn {
+        width: 100%;
+    }
+}

@@ -1,3 +1,32 @@
+// Add at the start of the file
+function showNotification(message, type = 'success') {
+    const wrapper = document.querySelector('.notification-wrapper') || (() => {
+        const el = document.createElement('div');
+        el.className = 'notification-wrapper';
+        document.body.appendChild(el);
+        return el;
+    })();
+
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    const messageEl = document.createElement('div');
+    messageEl.className = 'notification-message';
+    messageEl.textContent = message;
+    
+    notification.appendChild(messageEl);
+    wrapper.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => wrapper.removeChild(notification), 300);
+    }, 3000);
+}
+
 // Time slot constants
 const WEEKDAY_SLOTS = [
     '17:00', '17:15', '17:30', '17:45',
@@ -26,16 +55,59 @@ const cancelBtn = document.getElementById('cancelTimeSelection');
 const confirmBtn = document.getElementById('confirmTimeSelection');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const bookingForm = document.getElementById('bookingForm');
+const fullNameInput = document.getElementById('fullName');
+const phoneInput = document.getElementById('phone');
+
+// Auto-fill form with user data from localStorage
+try {
+    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    const userData =JSON.parse(localStorage.getItem('userData'));
+    if (userProfile) {
+        fullNameInput.value = userProfile.full_name || '';
+        phoneInput.value = userData.phone_number || '';
+        
+        // Make fields readonly if they have values
+        if (userProfile.full_name) {
+            fullNameInput.setAttribute('readonly', true);
+        }
+        if (userProfile.emergency_contact) {
+            phoneInput.setAttribute('readonly', true);
+        }
+    }
+} catch (error) {
+    console.error('Error parsing user profile:', error);
+}
 
 let selectedTimeSlot = null;
 
-// Mock function to simulate checking availability (replace with actual API call)
+// Replace the mock function with real API call
 async function checkTimeSlotAvailability(date, timeSlot) {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 50));
-    
-    // Random availability (70% chance of being available)
-    return Math.random() > 0.3;
+    try {
+        const [hours, minutes] = timeSlot.split(':');
+        const timeDate = new Date(date);
+        timeDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        
+        // Format time as HH:mm:ss
+        const formattedTime = `${timeDate.getHours().toString().padStart(2, '0')}:${timeDate.getMinutes().toString().padStart(2, '0')}:00`;
+
+        const response = await fetch('https://carecab-9773d1d0a8c1.herokuapp.com/appointments/check-timeslot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({
+                date: timeDate.toISOString().split('T')[0],
+                time: formattedTime
+            })
+        });
+
+        const data = await response.json();
+        return data.available;
+    } catch (error) {
+        console.error('Error checking timeslot:', error);
+        return false;
+    }
 }
 
 // Get time slots based on day type
@@ -111,7 +183,7 @@ timeInput.addEventListener('click', () => {
         timePopup.classList.add('active');
         generateTimeSlots(dateInput.value);
     } else {
-        alert('Vui lòng chọn ngày trước');
+        showNotification('Vui lòng chọn ngày trước', 'error');
     }
 });
 
@@ -131,6 +203,35 @@ confirmBtn.addEventListener('click', () => {
     }
 });
 
+// Add these helper functions before the form submit handler
+async function getPatientId() {
+    try {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData?.user_id) throw new Error('User ID not found');
+        
+        const response = await fetch(`https://carecab-9773d1d0a8c1.herokuapp.com/patients/user/${userData.user_id}`, {
+            headers: { 'accept': 'application/json' }
+        });
+        const patientData = await response.json();
+        return patientData.id;
+    } catch (error) {
+        console.error('Error getting patient ID:', error);
+        throw error;
+    }
+}
+
+function formatDateTime(date, time) {
+    const [hours, minutes] = time.split(':');
+    const appointmentDate = new Date(date);
+    appointmentDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    
+    return {
+        dateOnly: appointmentDate.toISOString().split('T')[0],
+        timeWithZone: `${hours}:${minutes}:00`
+    };
+}
+
+// Replace the bookingForm submit handler
 bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -150,13 +251,89 @@ bookingForm.addEventListener('submit', async (e) => {
     
     try {
         formError.style.display = 'none';
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('Đặt lịch thành công!');
+        const patientId = await getPatientId();
+        const { dateOnly, timeWithZone } = formatDateTime(dateInput.value, timeInput.value);
+        console.log(JSON.stringify({
+            patient_id: patientId,
+            nurse_id: 1,
+            date: dateOnly,
+            time: timeWithZone,
+            location: "",
+            symptoms: document.getElementById('notes').value || "",
+            transportation: "None"
+        }));
+
+        const response = await fetch('https://carecab-9773d1d0a8c1.herokuapp.com/appointments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({
+                patient_id: patientId,
+                nurse_id: 1,
+                date: dateOnly,
+                time: timeWithZone,
+                location: "",
+                symptoms: document.getElementById('notes').value || "",
+                transportation: "None"
+            })
+        });
+        
+        
+        if (!response.ok) throw new Error('Booking failed');
+        
+        showNotification('Đặt lịch thành công!');
         bookingForm.reset();
+        
+        // Add delay before redirect to show the success message
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 1500);
     } catch (error) {
-        formError.textContent = 'Có lỗi xảy ra, vui lòng thử lại sau';
-        formError.style.display = 'block';
+        console.error('Booking error:', error);
+        showNotification('Có lỗi xảy ra, vui lòng thử lại sau', 'error');
     }
+});
+
+// Replace cancel booking functionality
+document.getElementById('cancelBooking').addEventListener('click', () => {
+    showNotification('Bạn có muốn hủy đặt lịch?', 'confirm');
+    
+    // Add this right after the notification wrapper in showNotification
+    const notification = document.querySelector('.notification');
+    
+    // Add confirm buttons
+    const buttonGroup = document.createElement('div');
+    buttonGroup.className = 'notification-actions';
+    buttonGroup.style.marginTop = '10px';
+    buttonGroup.style.display = 'flex';
+    buttonGroup.style.gap = '8px';
+    
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'btn btn-primary';
+    confirmBtn.textContent = 'Xác nhận';
+    confirmBtn.style.padding = '4px 8px';
+    confirmBtn.style.fontSize = '14px';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn btn-secondary';
+    cancelBtn.textContent = 'Hủy';
+    cancelBtn.style.padding = '4px 8px';
+    cancelBtn.style.fontSize = '14px';
+    
+    buttonGroup.appendChild(cancelBtn);
+    buttonGroup.appendChild(confirmBtn);
+    notification.appendChild(buttonGroup);
+
+    confirmBtn.addEventListener('click', () => {
+        window.location.href = 'home.html';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    });
 });
 
 // Set min date to today

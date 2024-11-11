@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ người dùng - CareCab</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="CareCab Logo">
+                <h1>CareCab</h1>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link">Trang chủ</a>
+                <a href="appointments.html" class="nav-link">Lịch hẹn</a>
+                <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-container main-content">
+        <h2>Hồ sơ của tôi</h2>
+        <div class="profile-content">
+            <div class="profile-section">
+                <h3>Thông tin cá nhân</h3>
+                <div class="profile-info">
+                    <div class="info-group">
+                        <label>Họ và tên:</label>
+                        <p id="fullName">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Email:</label>
+                        <p id="email">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Số điện thoại:</label>
+                        <p id="phone">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Ngày sinh:</label>
+                        <p id="birthDate">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Giới tính:</label>
+                        <p id="gender">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Tiểu sử:</label>
+                        <p id="bio">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Địa chỉ:</label>
+                        <p id="address">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Liên hệ khẩn cấp:</label>
+                        <p id="emergencyContact">Loading...</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Quan hệ:</label>
+                        <p id="emergencyRelation">Loading...</p>
+                    </div>
+                </div>
+                <button id="editProfileBtn" class="btn btn-primary">Chỉnh sửa thông tin</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>

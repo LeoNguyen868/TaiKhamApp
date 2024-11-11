@@ -20,7 +20,7 @@
             </button>
             <div class="nav-menu">
                 <a href="home.html" class="nav-link">Trang chủ</a>
-                <a href="#appointments" class="nav-link">Lịch hẹn</a>
+                <a href="appointments.html" class="nav-link">Lịch hẹn</a>
                 <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
             </div>
         </nav>
@@ -65,7 +65,10 @@
                     <textarea id="notes" name="notes" placeholder="Nhập ghi chú về tình trạng của bạn"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Xác nhận đặt lịch</button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBooking">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận đặt lịch</button>
+                </div>
             </form>
         </div>
     </div>

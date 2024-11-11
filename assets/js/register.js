@@ -101,6 +101,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Failed to create patient record');
             }
 
+            // Create empty user profile
+            const createProfileResponse = await fetch('https://carecab-9773d1d0a8c1.herokuapp.com/users/profile/', {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: '',
+                    date_of_birth: '2000-08-13', // Default date
+                    gender: '',
+                    bio: '',
+                    address: '',
+                    emergency_contact: '',
+                    emergency_contact_relationship: '',
+                    user_id: userData.user_id
+                })
+            });
+
+            if (!createProfileResponse.ok) {
+                throw new Error('Failed to create user profile');
+            }
+
             formMessage.textContent = 'Đăng ký thành công! Đang chuyển hướng...';
             formMessage.className = 'form-message success';
 

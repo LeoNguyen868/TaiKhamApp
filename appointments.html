@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch hẹn - CareCab</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="CareCab Logo">
+                <h1>CareCab</h1>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link">Trang chủ</a>
+                <a href="profile.html" class="nav-link">Hồ sơ</a>
+                <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="appointments-page">
+        <h2>Danh sách lịch hẹn</h2>
+        
+        <div class="status-tabs">
+            <button class="status-tab active" data-status="all">Tất cả</button>
+            <button class="status-tab" data-status="pending">Chờ xác nhận</button>
+            <button class="status-tab" data-status="confirmed">Đã xác nhận</button>
+            <button class="status-tab" data-status="cancelled">Đã hủy</button>
+            <button class="status-tab" data-status="completed">Đã hoàn thành</button>
+        </div>
+
+        <div id="appointmentsList" class="appointments-list">
+            <p>Đang tải lịch hẹn...</p>
+        </div>
+
+        <!-- Add appointment details popup -->
+        <div id="appointmentDetailsPopup" class="appointment-popup">
+            <div class="appointment-popup-content">
+                <button class="close-popup" aria-label="Đóng">&times;</button>
+                <h3>Chi tiết lịch hẹn</h3>
+                <div id="appointmentDetails"></div>
+                <div class="popup-actions" id="popupActions">
+                    <!-- Actions will be inserted here dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/appointments.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>

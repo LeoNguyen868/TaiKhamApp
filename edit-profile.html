@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa hồ sơ - CareCab</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="CareCab Logo">
+                <h1>CareCab</h1>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link">Trang chủ</a>
+                <a href="profile.html" class="nav-link">Hồ sơ</a>
+                <button id="logoutBtn" class="btn btn-login">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-container main-content">
+        <h2>Chỉnh sửa thông tin</h2>
+        <div class="profile-content">
+            <form id="editProfileForm" class="edit-profile-form">
+                <div class="form-group">
+                    <label for="fullName">Họ và tên:</label>
+                    <input type="text" id="fullName" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Ngày sinh:</label>
+                    <input type="date" id="birthDate" name="date_of_birth" data-date-format="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Giới tính:</label>
+                    <select id="gender" name="gender">
+                        <option value="">Chọn giới tính</option>
+                        <option value="M">Nam</option>
+                        <option value="F">Nữ</option>
+                        <option value="O">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Tiểu sử:</label>
+                    <textarea id="bio" name="bio" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" id="address" name="address">
+                </div>
+                <div class="form-group">
+                    <label for="emergencyContact">Liên hệ khẩn cấp:</label>
+                    <input type="text" id="emergencyContact" name="emergency_contact">
+                </div>
+                <div class="form-group">
+                    <label for="emergencyRelation">Quan hệ:</label>
+                    <input type="text" id="emergencyRelation" name="emergency_contact_relationship">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <a href="profile.html" class="btn btn-secondary">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CareCab. Tất cả quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/edit-profile.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>
