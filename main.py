@@ -3,9 +3,16 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins, but can be restricted
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Mount static files directory
 app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
