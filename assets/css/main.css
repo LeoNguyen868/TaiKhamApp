@@ -1193,9 +1193,7 @@ input[type="date"] {
     position: relative; /* Thêm position relative */
 }
 
-.status-tab-all {
-    margin-left: auto; /* Đẩy tab "Tất cả" sang bên phải */
-}
+
 
 .status-tab {
     padding: 0.75rem 1.5rem;
